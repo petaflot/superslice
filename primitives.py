@@ -60,8 +60,7 @@ class Quat(np.quaternion):
 		if echo is None:
 			raise ValueError("echo cannot be None")
 		
-		print(f"{norm = }\t{echo = }\t{delta = }\t{phi = }")
-
+		#print(f"{norm = }\t{echo = }\t{delta = }\t{phi = }")
 		return pow(norm,1/2)*quaternion.from_euler_angles( echo, delta, phi )
 
 class Point:
@@ -135,8 +134,8 @@ class Point:
 	@property
 	def d(self):
 		""" delta (azimuth/yaw on the horizontal plane, positive in the CCW direction) """
-		print(f"{self.components = }")
-		return self.a*pow(1j,-1/2)
+		#print(f"{self.components = }")
+		return self.quat.a*pow(1j,-1/2)
 
 	@property
 	def e(self):

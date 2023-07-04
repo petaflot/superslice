@@ -84,7 +84,7 @@ from tilings import TriGrid, QuadDrid, HexGrid, Penrose, Quasicrystal
 
 shapes = [
 		# Here are some Polytopes ; they have no faces, just Vertices
-		Spiral( 12, ('Ellipse', {'a': 1}) ),
+		#Spiral( 12, ('Ellipse', {'a': 1}) ),
 		#Spiral( 12, ('Logarithmic', {'a':2, 'k':5, }) ),
 		#Spiral( 12, ('Archimedean', {'a':2, }) ),
 		#Spiral( 12, ('Hyperbolic', {'a':2, }) ),
@@ -106,7 +106,6 @@ shapes = [
 	]
 
 for shape in shapes:
-	print(shape)
 	print(shape)
 	print()
 

@@ -241,7 +241,8 @@ class ObjectWidget(QWidget):
 		#l.setStyleSheet(style_TODO)
 		self.paths_start_layer_z = QSpinBox()
 		self.paths_start_layer_z.setMinimum(0)
-		self.paths_start_layer_z.setMaximum(self.canvas.P.totallayers)
+		#TODO self.paths_start_layer_z.setMaximum(self.canvas.P.totallayers)
+		self.paths_start_layer_z.setMaximum(10)
 		self.paths_start_layer_z.setValue(0)
 		self.paths_start_layer_z.valueChanged.connect(self.update_param)
 		gbox.addWidget(l, i, 0)
@@ -252,8 +253,10 @@ class ObjectWidget(QWidget):
 		#l.setStyleSheet(style_TODO)
 		self.paths_stop_layer_z = QSpinBox()
 		self.paths_stop_layer_z.setMinimum(0)
-		self.paths_stop_layer_z.setMaximum(self.canvas.P.totallayers)
-		self.paths_stop_layer_z.setValue(self.canvas.P.totallayers)
+		#TODO self.paths_stop_layer_z.setMaximum(self.canvas.P.totallayers)
+		self.paths_stop_layer_z.setMaximum(10)
+		#TODO self.paths_stop_layer_z.setValue(self.canvas.P.totallayers)
+		self.paths_stop_layer_z.setValue(10)
 		self.paths_stop_layer_z.valueChanged.connect(self.update_param)
 		gbox.addWidget(l, i, 0)
 		gbox.addWidget(self.paths_stop_layer_z, i, 1)
@@ -271,7 +274,8 @@ class ObjectWidget(QWidget):
 		#l.setStyleSheet(style_TODO)
 		self.faces_start_layer_z = QSpinBox()
 		self.faces_start_layer_z.setMinimum(0)
-		self.faces_start_layer_z.setMaximum(self.canvas.P.totallayers-1)
+		#TODO self.faces_start_layer_z.setMaximum(self.canvas.P.totallayers-1)
+		self.faces_start_layer_z.setMaximum(10)
 		self.faces_start_layer_z.setValue(0)
 		self.faces_start_layer_z.valueChanged.connect(self.update_param)
 		gbox.addWidget(l, i, 0)
@@ -282,8 +286,10 @@ class ObjectWidget(QWidget):
 		#l.setStyleSheet(style_TODO)
 		self.faces_stop_layer_z = QSpinBox()
 		self.faces_stop_layer_z.setMinimum(0)
-		self.faces_stop_layer_z.setMaximum(self.canvas.P.totallayers-1)
-		self.faces_stop_layer_z.setValue(self.canvas.P.totallayers-1)
+		#TODO self.faces_stop_layer_z.setMaximum(self.canvas.P.totallayers-1)
+		self.faces_stop_layer_z.setMaximum(10)
+		#TODO self.faces_stop_layer_z.setValue(self.canvas.P.totallayers-1)
+		self.faces_stop_layer_z.setValue(10)
 		self.faces_stop_layer_z.valueChanged.connect(self.update_param)
 		gbox.addWidget(l, i, 0)
 		gbox.addWidget(self.faces_stop_layer_z, i, 1)
@@ -326,7 +332,7 @@ class ObjectWidget(QWidget):
 		i += 1
 		l = QPushButton("Wavefront OBJ")
 		l.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
-		l.clicked.connect(self.canvas.P.export_obj)
+		#TODO l.clicked.connect(self.canvas.P.export_obj)
 		#l.setAlignment(Qt.AlignCenter)
 		#l.setStyleSheet(style_h1)
 		gbox.addWidget(l, i, 0, 1,2)
@@ -384,7 +390,8 @@ class MainWindow(QMainWindow):
 		self.canvas.create_native()
 		self.canvas.native.setParent(self)
 
-		self.setWindowTitle(' - '.join(['Superslice', self.canvas.P.name]))
+		#self.setWindowTitle(' - '.join(['Superslice', self.canvas.P.name]))
+		self.setWindowTitle(' - '.join(['Superslice', ]))
 
 		self.props = ObjectWidget( canvas = self.canvas )
 		splitter.addWidget(self.props)
@@ -473,13 +480,18 @@ class Canvas(scene.SceneCanvas):
 		self.view = self.central_widget.add_view()
 		self.view.camera = 'turntable'
 
-		self.points = []
-		for shape in ss.shapes:
-			self.points.extend([p.xyz for p in shape.vertices])
-			#self.P = ss.shapes[0]
-			#self.points = self.P.get_points()	# ALL the points, required for the mesh
-			#faces = self.P.get_mesh()
-			#points = self.P.get_points()
+		#self.points = []
+		#for shape in ss.shapes:
+		#	self.points.extend([p.xyz for p in shape.vertices])
+		#	faces = shape.faces
+		#	#self.P = ss.shapes[0]
+		#	#self.points = self.P.get_points()	# ALL the points, required for the mesh
+		#	#faces = self.P.get_mesh()
+		#	#points = self.P.get_points()
+		from vispy.geometry.generation import create_sphere
+		mesh = create_sphere(20, 20, radius=2.0)
+		self.points = mesh.get_vertices()
+		faces = mesh.get_faces()
 
 		"""
 		this is the actual path data (the path the toolhead will follow)
@@ -490,7 +502,8 @@ class Canvas(scene.SceneCanvas):
 		if not LINE_RENDERING_CORRECT:
 			# simpler version, but it's the points that get the shade! -> wrong
 			print(self.points[1])
-			self.line = scene.visuals.Line(pos=self.points[0], color=self.points[1], parent=self.view.scene)
+			#TODO self.line = scene.visuals.Line(pos=self.points[0], color=self.points[1], parent=self.view.scene)
+			self.line = scene.visuals.Line(pos=self.points, parent=self.view.scene)
 
 		else:
 			# correct rendering version, but WAAAAY too slow! uses huge amount of CPU
@@ -499,7 +512,8 @@ class Canvas(scene.SceneCanvas):
 			segs, cols = self.P.get_segments_by_layer()
 			self.lines = []
 			for i in range(len(segs)):
-				self.lines.append( scene.visuals.Line(pos=segs[i], color=cols[i], parent=self.view.scene) )
+				#TODO self.lines.append( scene.visuals.Line(pos=segs[i], color=cols[i], parent=self.view.scene) )
+				self.lines.append( scene.visuals.Line(pos=segs[i], parent=self.view.scene) )
 
 		"""
 		this shows a solid that approximates the final solid as it would be printed
@@ -514,22 +528,22 @@ class Canvas(scene.SceneCanvas):
 		meshdata = MeshData.MeshData(
 				vertices=self.points[0],
 				faces=faces[0],
-				face_colors = faces[1],
+				#face_colors = faces[1],
 			)
-		self.mesh = scene.visuals.Mesh(
-				meshdata=meshdata,
-				parent=self.view.scene)
+		#self.mesh = scene.visuals.Mesh(
+		#		meshdata=meshdata,
+		#		parent=self.view.scene)
 
 		# Wireframe for mesh
 		#wireframe_filter = WireframeFilter(color='lightblue')
 		#self.mesh.attach(wireframe_filter)
 
-		self.face_normals = MeshNormals(meshdata, primitive='face', color='yellow')
-		self.face_normals.parent = self.mesh
-		self.face_normals.visible = False
-		self.vertex_normals = MeshNormals(meshdata, primitive='vertex', color='orange', width=2)
-		self.vertex_normals.parent = self.mesh
-		self.vertex_normals.visible = False
+		#self.face_normals = MeshNormals(meshdata, primitive='face', color='yellow')
+		#self.face_normals.parent = self.mesh
+		#self.face_normals.visible = False
+		#self.vertex_normals = MeshNormals(meshdata, primitive='vertex', color='orange', width=2)
+		#self.vertex_normals.parent = self.mesh
+		#self.vertex_normals.visible = False
 
 		self.freeze()
 
@@ -538,6 +552,7 @@ class Canvas(scene.SceneCanvas):
 
 
 	def set_data(self, clip, cmap, fov, shading, normals):
+		""" TODO
 		if normals == 'None':
 				self.vertex_normals.visible = False
 				self.face_normals.visible = False
@@ -550,7 +565,7 @@ class Canvas(scene.SceneCanvas):
 		elif normals == 'Both':
 				self.vertex_normals.visible = True
 				self.face_normals.visible = True
-
+		"""
 		#if not LINE_RENDERING_CORRECT:
 		#	# TODO check if a value was changed, only update that!
 		#	self.P.layer_start, self.P.layer_stop = clip[0], clip[1]
@@ -574,7 +589,7 @@ class Canvas(scene.SceneCanvas):
 		#		pass
 
 		# TODO check if a value was changed, only update that!
-		self.P.layer_start_faces, self.P.layer_stop_faces = clip[2], clip[3]
+		#TODO self.P.layer_start_faces, self.P.layer_stop_faces = clip[2], clip[3]
 		try:
 			faces, colors = self.P.get_mesh()
 			#print("face/colors (vispy)", len(faces), len(colors))
@@ -584,18 +599,19 @@ class Canvas(scene.SceneCanvas):
 					edges=None,
 					face_colors = colors,
 				)
-			self.mesh.set_data( meshdata = meshdata )
-			self.mesh.parent = self.view.scene
+			#self.mesh.set_data( meshdata = meshdata )
+			#self.mesh.parent = self.view.scene
 
-			self.face_normals.set_data(meshdata = meshdata)
-			self.vertex_normals.set_data(meshdata = meshdata)
-		except superslice.NothingToShow:
-			self.mesh.parent = None
-			self.face_normals.parent = None
-			self.vertex_normals.parent = None
+			#TODO self.face_normals.set_data(meshdata = meshdata)
+			#TODO self.vertex_normals.set_data(meshdata = meshdata)
+		except: #TODO superslice.NothingToShow:
+			#self.mesh.parent = None
+			#TODO self.face_normals.parent = None
+			#TODO self.vertex_normals.parent = None
+			pass
 
 		self.view.camera.fov = fov
-		self.mesh.shading = shading
+		#self.mesh.shading = shading
 
 		#self.iso.set_color(cmap)
 		# maybe it's faster to only hide some trianglesvrather than recompute, ie. with clipping planes? I'm not quite I understood the related example, though.

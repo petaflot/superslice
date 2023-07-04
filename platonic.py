@@ -70,7 +70,7 @@ class Cube(Polyhedron):
 	num_faces = 6
 		
 	def __init__( self, r = 1, *args, **kwargs ):
-		# TODO bounds
+		# TODO bounds ; we want to be able to draw a partial cube
 		vertices = np.array([Point( self, quat = Quat.new_polar( r, delta*qi/2, echo*qi/2 )) for delta in (-2,-1,1,2) for echo in (-1,1)])
 
 		edges = []
